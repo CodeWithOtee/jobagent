@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FlowMind AI — Automate Your Business, Amplify Your Growth</title>
+  <meta name="description" content="FlowMind AI automates your day-to-day business operations, marketing campaigns, and social media so you can focus on what matters most." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #05060f;
+      --surface: #0d0f1e;
+      --surface2: #131629;
+      --border: rgba(255,255,255,0.07);
+      --accent: #7c3aed;
+      --accent2: #06b6d4;
+      --accent-glow: rgba(124,58,237,0.35);
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --radius: 16px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 5%;
+      backdrop-filter: blur(16px);
+      background: rgba(5,6,15,0.8);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 800; font-size: 1.25rem; color: var(--text);
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: .9rem; transition: color .2s; }
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-cta {
+      background: linear-gradient(135deg, var(--accent), #9333ea);
+      color: #fff; border: none; padding: 10px 22px;
+      border-radius: 10px; font-weight: 600; font-size: .9rem;
+      cursor: pointer; transition: opacity .2s;
+      text-decoration: none;
+    }
+    .nav-cta:hover { opacity: .85; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 120px 5% 80px;
+      position: relative; overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute; top: -20%; left: 50%; transform: translateX(-50%);
+      width: 900px; height: 900px;
+      background: radial-gradient(circle, rgba(124,58,237,.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute; top: 10%; right: -10%;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(6,182,212,.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(124,58,237,.15);
+      border: 1px solid rgba(124,58,237,.4);
+      color: #c4b5fd; padding: 6px 16px;
+      border-radius: 99px; font-size: .8rem; font-weight: 600;
+      margin-bottom: 28px; letter-spacing: .04em; text-transform: uppercase;
+    }
+
+    .badge-dot { width: 7px; height: 7px; border-radius: 50%; background: #7c3aed; animation: pulse 2s infinite; }
+
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+    h1 {
+      font-size: clamp(2.8rem, 6vw, 5.2rem);
+      font-weight: 900; line-height: 1.1;
+      letter-spacing: -.03em;
+      max-width: 900px;
+    }
+
+    h1 .gradient {
+      background: linear-gradient(135deg, #a78bfa 0%, #06b6d4 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      margin-top: 24px;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--muted); max-width: 600px;
+    }
+
+    .hero-buttons {
+      display: flex; gap: 14px; margin-top: 44px; flex-wrap: wrap; justify-content: center;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #9333ea);
+      color: #fff; padding: 16px 36px;
+      border-radius: 12px; font-weight: 700; font-size: 1rem;
+      border: none; cursor: pointer; transition: all .25s;
+      box-shadow: 0 0 30px var(--accent-glow);
+      text-decoration: none; display: inline-block;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 50px var(--accent-glow); }
+
+    .btn-ghost {
+      background: transparent; color: var(--text);
+      border: 1px solid var(--border); padding: 16px 36px;
+      border-radius: 12px; font-weight: 600; font-size: 1rem;
+      cursor: pointer; transition: all .25s; text-decoration: none; display: inline-block;
+    }
+    .btn-ghost:hover { border-color: rgba(255,255,255,.25); background: rgba(255,255,255,.04); }
+
+    .hero-stats {
+      display: flex; gap: 48px; margin-top: 64px;
+      padding-top: 48px; border-top: 1px solid var(--border);
+      flex-wrap: wrap; justify-content: center;
+    }
+
+    .stat strong { display: block; font-size: 2rem; font-weight: 800; color: var(--text); }
+    .stat span { font-size: .85rem; color: var(--muted); }
+
+    /* ── SECTIONS ── */
+    section { padding: 100px 5%; }
+
+    .section-label {
+      text-align: center; margin-bottom: 16px;
+      font-size: .8rem; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: #a78bfa;
+    }
+
+    .section-title {
+      text-align: center; font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 800; letter-spacing: -.02em; margin-bottom: 16px;
+    }
+
+    .section-sub {
+      text-align: center; color: var(--muted);
+      font-size: 1.05rem; max-width: 560px; margin: 0 auto 60px;
+    }
+
+    /* ── FEATURES ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px; max-width: 1100px; margin: 0 auto;
+    }
+
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 36px 32px;
+      transition: border-color .3s, transform .3s;
+      position: relative; overflow: hidden;
+    }
+    .feature-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      opacity: 0; transition: opacity .3s;
+    }
+    .feature-card:hover { border-color: rgba(124,58,237,.35); transform: translateY(-4px); }
+    .feature-card:hover::before { opacity: 1; }
+
+    .feature-icon {
+      width: 52px; height: 52px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; margin-bottom: 20px;
+    }
+
+    .feature-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 10px; }
+    .feature-card p { color: var(--muted); font-size: .95rem; line-height: 1.65; }
+
+    /* ── HOW IT WORKS ── */
+    #how { background: var(--surface); }
+
+    .steps {
+      display: flex; flex-direction: column; gap: 0;
+      max-width: 740px; margin: 0 auto;
+    }
+
+    .step {
+      display: flex; gap: 28px; position: relative;
+      padding-bottom: 48px;
+    }
+    .step:last-child { padding-bottom: 0; }
+    .step:not(:last-child) .step-line {
+      position: absolute; left: 23px; top: 52px; bottom: 0;
+      width: 2px; background: linear-gradient(to bottom, rgba(124,58,237,.6), transparent);
+    }
+
+    .step-num {
+      flex-shrink: 0;
+      width: 48px; height: 48px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), #9333ea);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 1rem;
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    .step-content h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+    .step-content p { color: var(--muted); line-height: 1.7; }
+
+    /* ── PRICING ── */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px; max-width: 1000px; margin: 0 auto;
+    }
+
+    .pricing-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 40px 36px;
+      position: relative; overflow: hidden;
+    }
+
+    .pricing-card.popular {
+      border-color: rgba(124,58,237,.6);
+      background: linear-gradient(135deg, rgba(124,58,237,.08), rgba(6,182,212,.05));
+    }
+
+    .popular-badge {
+      position: absolute; top: 20px; right: 20px;
+      background: linear-gradient(135deg, var(--accent), #9333ea);
+      color: #fff; font-size: .7rem; font-weight: 700;
+      padding: 4px 12px; border-radius: 99px; letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    .pricing-card .plan { font-size: .85rem; font-weight: 700; color: #a78bfa; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 12px; }
+    .pricing-card .price { font-size: 3rem; font-weight: 900; letter-spacing: -.04em; }
+    .pricing-card .price span { font-size: 1rem; font-weight: 500; color: var(--muted); }
+    .pricing-card .desc { color: var(--muted); font-size: .9rem; margin: 12px 0 28px; }
+
+    .feature-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .feature-list li {
+      display: flex; align-items: center; gap: 10px;
+      font-size: .9rem; color: var(--muted);
+    }
+    .feature-list li::before { content: '✓'; color: #34d399; font-weight: 700; }
+
+    .pricing-cta {
+      display: block; text-align: center; margin-top: 32px;
+      padding: 13px; border-radius: 10px; font-weight: 700;
+      font-size: .95rem; cursor: pointer; transition: all .25s;
+      text-decoration: none;
+    }
+
+    .pricing-cta.outline {
+      border: 1px solid var(--border); color: var(--text);
+      background: transparent;
+    }
+    .pricing-cta.outline:hover { border-color: rgba(255,255,255,.3); background: rgba(255,255,255,.05); }
+
+    .pricing-cta.filled {
+      background: linear-gradient(135deg, var(--accent), #9333ea);
+      color: #fff; border: none;
+      box-shadow: 0 0 24px var(--accent-glow);
+    }
+    .pricing-cta.filled:hover { transform: translateY(-2px); }
+
+    /* ── WAITLIST ── */
+    #waitlist {
+      background: linear-gradient(135deg, rgba(124,58,237,.08) 0%, rgba(6,182,212,.05) 100%);
+      border-top: 1px solid var(--border);
+    }
+
+    .waitlist-box {
+      max-width: 580px; margin: 0 auto; text-align: center;
+    }
+
+    .waitlist-form {
+      display: flex; flex-direction: column; gap: 14px;
+      margin-top: 36px;
+    }
+
+    .form-row { display: flex; gap: 12px; }
+    .form-row input { flex: 1; }
+
+    input, select {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 14px 18px; border-radius: 10px;
+      font-size: .95rem; font-family: inherit;
+      transition: border-color .2s; outline: none; width: 100%;
+    }
+    input::placeholder { color: #475569; }
+    input:focus, select:focus { border-color: rgba(124,58,237,.6); }
+
+    select option { background: #0d0f1e; }
+
+    .submit-btn {
+      background: linear-gradient(135deg, var(--accent), #9333ea);
+      color: #fff; border: none; padding: 16px;
+      border-radius: 10px; font-weight: 700; font-size: 1rem;
+      cursor: pointer; transition: all .25s;
+      box-shadow: 0 0 24px var(--accent-glow);
+    }
+    .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 0 40px var(--accent-glow); }
+    .submit-btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+    .form-note { font-size: .8rem; color: var(--muted); margin-top: 8px; }
+
+    .success-msg {
+      display: none;
+      background: rgba(52,211,153,.1);
+      border: 1px solid rgba(52,211,153,.3);
+      border-radius: 12px; padding: 24px;
+      margin-top: 24px;
+    }
+    .success-msg.show { display: block; }
+    .success-msg h4 { color: #34d399; font-size: 1.1rem; margin-bottom: 6px; }
+    .success-msg p { color: var(--muted); font-size: .9rem; }
+
+    .error-msg {
+      display: none;
+      background: rgba(239,68,68,.1);
+      border: 1px solid rgba(239,68,68,.3);
+      border-radius: 12px; padding: 16px;
+      color: #fca5a5; font-size: .9rem;
+    }
+    .error-msg.show { display: block; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--surface); border-top: 1px solid var(--border);
+      padding: 48px 5%; text-align: center;
+    }
+    footer .logo { justify-content: center; margin-bottom: 16px; }
+    footer p { color: var(--muted); font-size: .85rem; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .form-row { flex-direction: column; }
+      .hero-stats { gap: 32px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">
+    <div class="logo-icon">⚡</div>
+    FlowMind AI
+  </a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+  </ul>
+  <a href="#waitlist" class="nav-cta">Join Waitlist</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="badge"><span class="badge-dot"></span> Early Access — Limited Spots</div>
+
+  <h1>
+    Run Your Business on<br/>
+    <span class="gradient">AI Autopilot</span>
+  </h1>
+
+  <p class="hero-sub">
+    FlowMind AI handles your operations, marketing, and social media so your team focuses on growth — not grunt work.
+  </p>
+
+  <div class="hero-buttons">
+    <a href="#waitlist" class="btn-primary">Get Early Access</a>
+    <a href="#features" class="btn-ghost">See What We Automate</a>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat"><strong>10+</strong><span>Hours saved weekly</span></div>
+    <div class="stat"><strong>3x</strong><span>Faster content output</span></div>
+    <div class="stat"><strong>80%</strong><span>Less manual follow-up</span></div>
+    <div class="stat"><strong>1 platform</strong><span>End-to-end automation</span></div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <p class="section-label">What FlowMind Automates</p>
+  <h2 class="section-title">Every corner of your business — automated</h2>
+  <p class="section-sub">From client follow-ups to viral social posts, FlowMind AI runs the repeatable so you don't have to.</p>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(124,58,237,.15);">🏢</div>
+      <h3>Daily Business Operations</h3>
+      <p>Auto-schedule meetings, send follow-up emails, generate reports, and manage task queues — all without touching a single button.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(6,182,212,.15);">📣</div>
+      <h3>Marketing Campaigns</h3>
+      <p>AI-crafted email sequences, ad copy, and campaign briefs tailored to your brand voice and target audience, ready to launch in minutes.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(52,211,153,.15);">📱</div>
+      <h3>Social Media on Autopilot</h3>
+      <p>Generate, schedule, and publish platform-optimized posts across Instagram, LinkedIn, X, and Facebook — daily, without lifting a finger.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(251,191,36,.15);">🤝</div>
+      <h3>Client Communication</h3>
+      <p>Smart intake forms, automated onboarding sequences, appointment reminders, and invoice follow-ups — your CRM on autopilot.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(239,68,68,.15);">📊</div>
+      <h3>Analytics & Reporting</h3>
+      <p>Weekly performance digests, ROI summaries, and actionable insights delivered straight to your inbox — no dashboard required.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(167,139,250,.15);">🔗</div>
+      <h3>Tool Integrations</h3>
+      <p>Connects with the tools you already use — Shopify, HubSpot, Notion, Slack, Gmail, and 50+ more via native integrations.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <p class="section-label">How It Works</p>
+  <h2 class="section-title">Set up in minutes. Save hours every week.</h2>
+  <p class="section-sub">No technical skills needed. Just tell FlowMind about your business and watch it go to work.</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-line"></div>
+      <div class="step-content">
+        <h3>Connect your business</h3>
+        <p>Tell FlowMind about your industry, services, brand voice, and goals. Connect your existing tools in one click.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-line"></div>
+      <div class="step-content">
+        <h3>Choose your automations</h3>
+        <p>Pick from pre-built playbooks for your business type or build custom flows. FlowMind learns your preferences over time.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-line"></div>
+      <div class="step-content">
+        <h3>Review and approve</h3>
+        <p>Get a daily digest of everything FlowMind did on your behalf. Approve, edit, or override — you're always in control.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <h3>Grow without grinding</h3>
+        <p>Watch your business run like clockwork while you focus on strategy, relationships, and the work only you can do.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <p class="section-label">Pricing</p>
+  <h2 class="section-title">Simple, transparent pricing</h2>
+  <p class="section-sub">Early access members lock in founding rates — up to 60% off at launch.</p>
+
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <p class="plan">Starter</p>
+      <div class="price">$49<span>/mo</span></div>
+      <p class="desc">Perfect for solopreneurs and freelancers automating the basics.</p>
+      <ul class="feature-list">
+        <li>3 automation workflows</li>
+        <li>Social media scheduling (3 channels)</li>
+        <li>Email follow-up sequences</li>
+        <li>Weekly report digest</li>
+        <li>Email support</li>
+      </ul>
+      <a href="#waitlist" class="pricing-cta outline">Join Waitlist</a>
+    </div>
+
+    <div class="pricing-card popular">
+      <span class="popular-badge">Most Popular</span>
+      <p class="plan">Growth</p>
+      <div class="price">$149<span>/mo</span></div>
+      <p class="desc">For growing teams that need full-spectrum automation.</p>
+      <ul class="feature-list">
+        <li>Unlimited workflows</li>
+        <li>All social platforms + scheduling</li>
+        <li>Marketing campaign builder</li>
+        <li>CRM &amp; client automation</li>
+        <li>Analytics &amp; ROI dashboard</li>
+        <li>Priority support + onboarding call</li>
+      </ul>
+      <a href="#waitlist" class="pricing-cta filled">Join Waitlist</a>
+    </div>
+
+    <div class="pricing-card">
+      <p class="plan">Agency</p>
+      <div class="price">$399<span>/mo</span></div>
+      <p class="desc">For agencies managing automation for multiple clients.</p>
+      <ul class="feature-list">
+        <li>Everything in Growth</li>
+        <li>Multi-workspace management</li>
+        <li>White-label reports</li>
+        <li>API access</li>
+        <li>Dedicated account manager</li>
+        <li>Custom integrations</li>
+      </ul>
+      <a href="#waitlist" class="pricing-cta outline">Join Waitlist</a>
+    </div>
+  </div>
+</section>
+
+<!-- WAITLIST -->
+<section id="waitlist">
+  <div class="waitlist-box">
+    <p class="section-label">Join the Waitlist</p>
+    <h2 class="section-title">Be first when we launch</h2>
+    <p class="section-sub" style="margin-bottom:0">Founding members get early access, locked-in pricing, and a direct line to our team to shape the product.</p>
+
+    <form class="waitlist-form" id="waitlistForm">
+      <div class="form-row">
+        <input type="text" id="nameInput" placeholder="Your name" required />
+        <input type="email" id="emailInput" placeholder="Work email" required />
+      </div>
+      <select id="bizInput">
+        <option value="">What best describes your business?</option>
+        <option value="ecommerce">E-Commerce / Retail</option>
+        <option value="agency">Marketing / Creative Agency</option>
+        <option value="consulting">Consulting / Coaching</option>
+        <option value="saas">SaaS / Tech</option>
+        <option value="local">Local / Service Business</option>
+        <option value="freelancer">Freelancer / Solopreneur</option>
+        <option value="other">Other</option>
+      </select>
+      <button type="submit" class="submit-btn" id="submitBtn">
+        Reserve My Spot →
+      </button>
+      <p class="form-note">No spam, ever. We'll only reach out about your early access.</p>
+    </form>
+
+    <div class="success-msg" id="successMsg">
+      <h4>🎉 You're on the list!</h4>
+      <p id="successText">We'll reach out soon with your early access details. Welcome to FlowMind AI!</p>
+    </div>
+
+    <div class="error-msg" id="errorMsg"></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="logo">
+    <div class="logo-icon">⚡</div>
+    FlowMind AI
+  </a>
+  <p>Automate your business. Amplify your growth.</p>
+  <p style="margin-top:16px">© 2026 FlowMind AI. All rights reserved.</p>
+</footer>
+
+<script>
+  const form = document.getElementById('waitlistForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const successMsg = document.getElementById('successMsg');
+  const successText = document.getElementById('successText');
+  const errorMsg = document.getElementById('errorMsg');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    errorMsg.classList.remove('show');
+
+    const name = document.getElementById('nameInput').value.trim();
+    const email = document.getElementById('emailInput').value.trim();
+    const bizType = document.getElementById('bizInput').value;
+
+    if (!name || !email) return;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Reserving your spot…';
+
+    try {
+      const res = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, business_type: bizType }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok || res.status === 200) {
+        form.style.display = 'none';
+        successMsg.classList.add('show');
+
+        if (data.status === 'already_registered') {
+          successText.textContent = "You're already on our waitlist! We'll be in touch soon.";
+        } else {
+          successText.textContent = `You're #${data.position} on the list. We'll reach out with your early access details. Welcome to FlowMind AI!`;
+        }
+      } else {
+        throw new Error(data.detail || 'Something went wrong.');
+      }
+    } catch (err) {
+      errorMsg.textContent = err.message || 'Network error — please try again.';
+      errorMsg.classList.add('show');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Reserve My Spot →';
+    }
+  });
+</script>
+
+</body>
+</html>
