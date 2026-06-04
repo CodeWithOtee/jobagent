@@ -2,11 +2,13 @@ import csv
 import io
 import json
 import os
+import secrets
 from datetime import datetime, timezone
 from pathlib import Path
 
-from fastapi import FastAPI, Request, HTTPException, Header
-from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
+from fastapi import FastAPI, Request, HTTPException, Depends
+from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse, Response
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
@@ -20,6 +22,23 @@ WAITLIST_FILE = Path("data/waitlist.json")
 WAITLIST_FILE.parent.mkdir(exist_ok=True)
 if not WAITLIST_FILE.exists():
     WAITLIST_FILE.write_text("[]")
+
+security = HTTPBasic()
+ADMIN_USER = os.getenv("ADMIN_USER", "admin")
+ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "")
+
+
+def require_admin(credentials: HTTPBasicCredentials = Depends(security)):
+    if not ADMIN_PASSWORD:
+        raise HTTPException(status_code=500, detail="ADMIN_PASSWORD env var not set")
+    user_ok = secrets.compare_digest(credentials.username.encode(), ADMIN_USER.encode())
+    pass_ok = secrets.compare_digest(credentials.password.encode(), ADMIN_PASSWORD.encode())
+    if not (user_ok and pass_ok):
+        raise HTTPException(
+            status_code=401,
+            detail="Incorrect credentials",
+            headers={"WWW-Authenticate": "Basic"},
+        )
 
 
 class WaitlistEntry(BaseModel):
@@ -82,7 +101,7 @@ async def waitlist_count():
 
 
 @app.get("/admin", response_class=HTMLResponse)
-async def admin(request: Request):
+async def admin(request: Request, _: None = Depends(require_admin)):
     waitlist = load_waitlist()
     by_type: dict = {}
     for e in waitlist:
@@ -95,7 +114,7 @@ async def admin(request: Request):
 
 
 @app.get("/admin/export")
-async def export_csv():
+async def export_csv(_: None = Depends(require_admin)):
     waitlist = load_waitlist()
     output = io.StringIO()
     writer = csv.DictWriter(output, fieldnames=["position", "name", "email", "business_type", "joined_at"])
