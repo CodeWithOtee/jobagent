@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FlowMind AI — Admin Waitlist</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #05060f; --surface: #0d0f1e; --surface2: #131629;
+      --border: rgba(255,255,255,0.07); --accent: #7c3aed;
+      --text: #f1f5f9; --muted: #94a3b8;
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); padding: 40px 5%; }
+    header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; }
+    .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.2rem; text-decoration: none; color: var(--text); }
+    .logo-icon { width: 36px; height: 36px; background: linear-gradient(135deg, #7c3aed, #06b6d4); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .export-btn { background: linear-gradient(135deg, #7c3aed, #9333ea); color: #fff; border: none; padding: 10px 22px; border-radius: 10px; font-weight: 600; font-size: .9rem; cursor: pointer; text-decoration: none; }
+
+    .stats { display: flex; gap: 20px; margin-bottom: 36px; flex-wrap: wrap; }
+    .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px 28px; flex: 1; min-width: 160px; }
+    .stat-card strong { display: block; font-size: 2.2rem; font-weight: 800; }
+    .stat-card span { color: var(--muted); font-size: .85rem; }
+
+    .breakdown { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 28px; margin-bottom: 36px; }
+    .breakdown h3 { font-size: 1rem; font-weight: 700; margin-bottom: 18px; }
+    .breakdown-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+    .tag { background: rgba(124,58,237,.15); border: 1px solid rgba(124,58,237,.3); color: #c4b5fd; padding: 5px 14px; border-radius: 99px; font-size: .82rem; font-weight: 600; }
+
+    table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: 14px; overflow: hidden; border: 1px solid var(--border); }
+    th { background: var(--surface2); padding: 14px 18px; text-align: left; font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+    td { padding: 14px 18px; border-top: 1px solid var(--border); font-size: .88rem; }
+    tr:hover td { background: rgba(255,255,255,.02); }
+    .pos { color: var(--muted); font-weight: 600; }
+    .biz { background: rgba(124,58,237,.12); color: #c4b5fd; padding: 3px 10px; border-radius: 99px; font-size: .78rem; font-weight: 600; }
+    .empty { text-align: center; padding: 60px; color: var(--muted); }
+  </style>
+</head>
+<body>
+<header>
+  <a href="/" class="logo">
+    <div class="logo-icon">⚡</div>
+    FlowMind AI
+  </a>
+  <a href="/admin/export" class="export-btn">Export CSV</a>
+</header>
+
+<div class="stats">
+  <div class="stat-card">
+    <strong>{{ entries | length }}</strong>
+    <span>Total signups</span>
+  </div>
+  <div class="stat-card">
+    <strong>{{ by_type | length }}</strong>
+    <span>Business types</span>
+  </div>
+  {% if entries %}
+  <div class="stat-card">
+    <strong>{{ entries[-1].joined_at[:10] }}</strong>
+    <span>Latest signup</span>
+  </div>
+  {% endif %}
+</div>
+
+{% if by_type %}
+<div class="breakdown">
+  <h3>Signups by business type</h3>
+  <div class="breakdown-grid">
+    {% for k, v in by_type.items() %}
+    <span class="tag">{{ k }} — {{ v }}</span>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Business Type</th>
+      <th>Joined</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% if entries %}
+      {% for e in entries | reverse %}
+      <tr>
+        <td class="pos">{{ e.position }}</td>
+        <td>{{ e.name }}</td>
+        <td>{{ e.email }}</td>
+        <td><span class="biz">{{ e.business_type or '—' }}</span></td>
+        <td>{{ e.joined_at[:16].replace("T", " ") }} UTC</td>
+      </tr>
+      {% endfor %}
+    {% else %}
+      <tr><td colspan="5" class="empty">No signups yet.</td></tr>
+    {% endif %}
+  </tbody>
+</table>
+</body>
+</html>

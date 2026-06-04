@@ -1,13 +1,15 @@
+import csv
+import io
 import json
 import os
 from datetime import datetime, timezone
 from pathlib import Path
 
-from fastapi import FastAPI, Request, HTTPException
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi import FastAPI, Request, HTTPException, Header
+from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 
 app = FastAPI(title="FlowMind AI")
 
@@ -77,3 +79,31 @@ async def join_waitlist(entry: WaitlistEntry):
 async def waitlist_count():
     waitlist = load_waitlist()
     return {"count": len(waitlist)}
+
+
+@app.get("/admin", response_class=HTMLResponse)
+async def admin(request: Request):
+    waitlist = load_waitlist()
+    by_type: dict = {}
+    for e in waitlist:
+        t = e.get("business_type") or "not specified"
+        by_type[t] = by_type.get(t, 0) + 1
+    return templates.TemplateResponse(
+        "admin.html",
+        {"request": request, "entries": waitlist, "by_type": by_type},
+    )
+
+
+@app.get("/admin/export")
+async def export_csv():
+    waitlist = load_waitlist()
+    output = io.StringIO()
+    writer = csv.DictWriter(output, fieldnames=["position", "name", "email", "business_type", "joined_at"])
+    writer.writeheader()
+    writer.writerows(waitlist)
+    output.seek(0)
+    return StreamingResponse(
+        iter([output.getvalue()]),
+        media_type="text/csv",
+        headers={"Content-Disposition": "attachment; filename=flowmind_waitlist.csv"},
+    )
